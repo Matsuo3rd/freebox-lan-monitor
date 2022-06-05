@@ -5,6 +5,7 @@ Description= Freebox LAN Monitor Service
 Type=simple 
 ExecStart=/home/pi/freebox-lan-monitor/freebox-lan-monitor.sh
 WorkingDirectory=/home/pi/freebox-lan-monitor
+User=pi
 
 [Install]
 WantedBy=multi-user.target
