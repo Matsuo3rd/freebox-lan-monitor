@@ -1,0 +1,4 @@
+{
+	"mosquitto_pub_params": "-h rpi4.local",
+	"mqtt_topic" : "freebox-lan-monitor"
+}
