@@ -3,7 +3,6 @@
 FREEBOX_API_VERSION=v8
 FREEBOX_APP_NAME="Freebox Server LAN Monitor"
 FREEBOX_APP_ID="freebox_server_lan_monitor"
-#FREEBOX_APP_ID="freebox_player_remote"
 FREEBOX_APP_HOSTNAME="mafreebox.freebox.fr"
 FREEBOX_API_BASE_URL="http://${FREEBOX_APP_HOSTNAME}/api/${FREEBOX_API_VERSION}"
 FREEBOX_API_WS_BASE_URL="ws://${FREEBOX_APP_HOSTNAME}/api/${FREEBOX_API_VERSION}"
