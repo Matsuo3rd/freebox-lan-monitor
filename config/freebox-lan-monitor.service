@@ -1,0 +1,10 @@
+[Unit]
+Description= Freebox LAN Monitor Service
+
+[Service]
+Type=simple 
+ExecStart=/home/pi/freebox-lan-monitor/freebox-lan-monitor.sh
+WorkingDirectory=/home/pi/freebox-lan-monitor
+
+[Install]
+WantedBy=multi-user.target
