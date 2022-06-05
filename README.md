@@ -48,7 +48,7 @@ Dependencies commands must either be available in PATH or directly put in the sa
 On RPI:
 
 1. Edit `config/freebox-lan-monitor.service` and adapt `ExecStart` , `WorkingDirectory` and `User` settings accordingly
-2. Copy `.config/freebox-lan-monitor.service` file to `/etc/systemd/system/`
+2. Copy `config/freebox-lan-monitor.service` file to `/etc/systemd/system/`
 3. Execute `sudo systemctl enable freebox-lan-monitor.service`
 4. Execute `sudo systemctl freebox-lan-monitor.service`
 
