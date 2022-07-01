@@ -1,10 +1,16 @@
 [Unit]
 Description= Freebox LAN Monitor Service
+After=network.target
 
 [Service]
-Type=simple 
+Type=notify
+NotifyAccess=all
 ExecStart=/home/pi/freebox-lan-monitor/freebox-lan-monitor.sh
 WorkingDirectory=/home/pi/freebox-lan-monitor
+TimeoutStartSec=120
+TimeoutStopSec=30
+Restart=always
+RestartSec=10
 User=pi
 
 [Install]
