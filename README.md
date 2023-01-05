@@ -1,7 +1,7 @@
 # freebox-lan-monitor
 
 Monitors devices present in Freebox (French Internet Provider box) Local Area Network (LAN).
-Sends notifications to a MQTT server in order to pass on events to another process (such as home automation sofware).
+Sends notifications to a MQTT server when devices are entering or leaving network in order to pass on events to another process (such as home automation sofware).
 
 ## Description
 
