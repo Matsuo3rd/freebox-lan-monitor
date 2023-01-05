@@ -16,6 +16,8 @@ LOG_FILE="${LOG_DIR}/freebox-lan-monitor.log"
 FREEBOX_API_CONFIG_DIR="${CURRENT_DIR}/config"
 FREEBOX_API_TMP_DIR="${CURRENT_DIR}/tmp"
 
+ZIP=$(which zip) || \
+	{ echo "$0 missing prereq zip. Fatal error."; exit 1; }
 CURL=$(which curl) || \
   { echo "$0 missing prereq curl. Fatal error."; exit 1; }
 # jq-1.5 is 10x faster than jq-1.6 !!!
@@ -39,7 +41,7 @@ main() {
 	mkdir -p "$LOG_DIR"
 
 	#TODO: systemctl stop is not trapped
-	trap "quit" SIGINT SIGTERM SIGEXIT
+	trap "quit" SIGINT SIGTERM
 
 	exec &> >(tee -a -i "${LOG_FILE}")
 
@@ -175,27 +177,21 @@ browseLAN() {
 		fi
 		
 	done
-
+	
 	log "LAN devices browsing completed"
 }
-
-#| ${WEBSOCAT} -t --no-close -H="X-Fbx-App-Auth: ${session_token}" "${FREEBOX_API_WS_BASE_URL}/ws/event" \
-
-#| ${WEBSOCAT} -t --no-close -H="X-Fbx-App-Auth: ${session_token}" - "autoreconnect:${FREEBOX_API_WS_BASE_URL}/ws/event" \
-
-#| ${WEBSOCAT} --text --no-close -H=X-Fbx-App-Auth:${session_token} ${FREEBOX_API_WS_BASE_URL}/ws/event \
 
 monitorLAN() {
 	log "LAN devices monitoring registration in progress"
 	#TODO: try reconnect:ws://....
 	echo '{"action": "register", "events": ["lan_host_l3addr_reachable", "lan_host_l3addr_unreachable"]}' \
-		| ${WEBSOCAT} --text --no-close -H="X-Fbx-App-Auth: ${session_token}" ${FREEBOX_API_WS_BASE_URL}/ws/event\
+		| ${WEBSOCAT} --ping-timeout 120 --ping-interval 60 --text --no-close -H="X-Fbx-App-Auth: ${session_token}" ${FREEBOX_API_WS_BASE_URL}/ws/event \
 		| while read notification; do
 			#log "${notification}"
 			processLANNotification "${notification}"
 	done
 
-	log "LAN devices monitoring stopped. Relaunching."
+	warn "LAN devices monitoring stopped. Relaunching."
 	while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' --connect-timeout 5 ${FREEBOX_APP_HOSTNAME})" != "200" ]];
 	do
 			warn "Freebox endpoint could not be reached. Retrying ..."
@@ -258,9 +254,10 @@ normalizePrimaryName() {
 logArchiver() {
 	while true
 	do
-		sleep 1d
+		numberSecondsUntilMidnight=$(($(date -d 'tomorrow 00:00:00' +%s) - $(date +%s)))
+		sleep $numberSecondsUntilMidnight
 		log "Archiving logs"
-		${ZIP} "${LOG_FILE}_$(date +"%Y-%m-%d_%H%M%S").zip" "${LOG_FILE}" &> /dev/null
+		${ZIP} -j "${LOG_FILE}_$(date +"%Y-%m-%d_%H%M%S").zip" "${LOG_FILE}" &> /dev/null
 		# Clear log file content instead of deleting it - which messes with log process
 		> "${LOG_FILE}"
 		# Delete old archives
