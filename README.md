@@ -20,7 +20,7 @@ My use case is to trigger some home automation routines based on my smartphone a
 * `websocat` command
 * optional: `mosquitto_pub` command
 
-## Dependecies
+## Dependencies
 
 Dependencies commands must either be available in PATH or directly put in the same directory as `freebox-lan-monitor.sh` script.
 
