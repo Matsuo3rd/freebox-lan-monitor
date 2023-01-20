@@ -18,6 +18,7 @@ My use case is to trigger some home automation routines based on my smartphone a
 * `curl` command
 * `jq` command
 * `websocat` command
+* `openssl` command
 * optional: `mosquitto_pub` command
 
 ## Dependencies
